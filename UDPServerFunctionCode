@@ -1,0 +1,50 @@
+    // Define the local endpoint (the port the server will listen on)
+    int port = 48569;
+
+    // Create a new UdpClient to listen on the specified port
+    while (true)
+        try
+        {
+            using (UdpClient udpServer = new UdpClient(port))
+            {
+                Console.WriteLine($"UDP Server listening on port {port}");
+
+                try
+                {
+                    // Continuously listen for incoming data
+
+                    {
+                        // Define the remote endpoint (the client, if needed)
+                        IPEndPoint remoteEndPoint = new IPEndPoint(IPAddress.Any, port);
+                        //udpServer.Client.ReceiveTimeout = 2000;
+                        //udpServer.Client.SendTimeout = 2000;
+
+                        // Receive data from the client
+
+                        byte[] data = udpServer.Receive(ref remoteEndPoint);
+                        // Convert the byte array to a string
+                        string receivedMessage = Encoding.UTF8.GetString(data);
+
+                        // Display the received message and the client's IP address and port
+                        Console.WriteLine($"Receieeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee111: {receivedMessage} ::::{DateTime.Now}");
+                        Console.WriteLine($"From {remoteEndPoint.Address}:{remoteEndPoint.Port}");
+
+                        //Send response back to client(optional)
+                        byte[] response = Encoding.ASCII.GetBytes("Message received "+DateTime.Now);
+                        //if(DateTime.Now.Second%2==0)
+                        //udpServer.Send(response, response.Length, (remoteEndPoint));
+
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Error: {ex.Message}");
+                }
+            }
+
+        }
+        catch
+        {
+
+
+        }
